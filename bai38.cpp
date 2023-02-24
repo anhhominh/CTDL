@@ -2,31 +2,37 @@
 
 using namespace std;
 
-int main(){
-	int a[100001],n,s,i;
-	cin>>n;
-	for(i=0;i<n;i++){
-		cin>>a[i];
-	}
-	int sum = 0;
-	bool check = false;
-	cin>>s;
-	for(i=0;i<n;i++){
-		sum = a[i];
-		for(int j=i+1;j<n;j++){
-			sum = sum + a[j];
-			if(sum == s){
-				for(int k=i;k<=j;k++){
-				cout<<a[k]<<" ";	
-				check = true;
-				}
-				break;
+int interpolationSearch(int a[], int n,int x){
+	int l=0,r=n-1;
+	while(a[r] != a[l] && x >= a[l] && x <= a[r]){
+		int mid = l + (r-l)*(x-a[l])/(a[r]-a[l]);
+		if(a[mid]<x){
+			l = mid + 1;
+		} else if (a[mid] > x ){
+			r = mid - 1;
+		} else {
+			if(mid > 0 && a[mid-1] == x){
+				r = mid - 1;
+			} else {
+				return mid;
 			}
-		}	
-		if(check){
-			break;
-		} 
+		}
 	}
-	if(check == false) cout<<"-1";
+	if(a[l] == x){
+		return l;
+	}
+	return -1;
+}
+
+int a[100];
+int main(){
+	int n, x;
+	cin >> n;
+	for (int i = 0; i < n; i++){
+		cin >> a[i];
+	}
+	cin >> x;
+	cout << interpolationSearch(a, n, x);
+	
 	return 0;
 }
